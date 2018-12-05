@@ -109,7 +109,7 @@
          firebase.auth().onAuthStateChanged(function(user) {
             if(user) {
                 // Links the comment to the user. 
-                if(data.val().user === user.email.split("@")[0]){
+                if(data.val().uid === user.uid){
                     td.appendChild(editBtn);
                     td.appendChild(delBtn);
                     row.appendChild(td);
@@ -140,6 +140,7 @@
       	firebase.auth().onAuthStateChanged(function(user) {
          if (user) {
           var id = getUrlVars()['id']; 
+          var uid = user.uid;
           var rootRef = firebase.database().ref();
          	commentRef = rootRef.child("posts/"+page+"/comments");
          
@@ -151,7 +152,7 @@
          	var d = new Date();
          	var date = getFormattedDate(d);
          
-         	var entry = {comment: comment, user: user, date: date, uid: id}; //add user field
+         	var entry = {comment: comment, user: user, date: date, uid: uid}; //add user field
          
          	commentRef.push().set(entry);
          } else {
