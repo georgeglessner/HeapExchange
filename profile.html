@@ -80,7 +80,7 @@
                  
         let row = document.createElement('tr');
         row.setAttribute("id", data.key);
-        if(data.val().user){
+        if(data.val().uid){
         row.innerHTML = `<td id=${data.key}>${data.val().post} <br><br> Posted: ${data.val().date} By:  <a href="profile.html?id=${data.val().uid}&un=${data.val().user}">${data.val().user}</td>`;
         } else{
         row.innerHTML = `<td id=${data.key}><a href="post.html?id=${data.key}"${data.val().post}</a>${data.val().post} <img src="Images/comment.png" id="commentImg">${numComments}</td>`;
@@ -102,6 +102,7 @@
         firebase.auth().onAuthStateChanged(function(user) {
         if (user) {
           var id = getUrlVars()['id']; 
+          var uid = user.uid;
           var rootRef = firebase.database().ref().child("profiles");
           postRef = rootRef.child(id);
         
@@ -113,7 +114,7 @@
           var d = new Date();
           var date = getFormattedDate(d);
         
-          var entry = {post: post, user: user, date: date, uid: id}; //add user field
+          var entry = {post: post, user: user, date: date, uid: uid}; //add user field
         
           postRef.push().set(entry);
         } else {
