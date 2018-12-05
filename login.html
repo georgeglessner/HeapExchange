@@ -16,6 +16,7 @@
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
          <div class="navbar-nav">
             <a class="nav-item nav-link active" href="index.html">Home <span class="sr-only">(current)</span></a>
+            <a class="nav-item nav-link" href="settings.html">Settings</a>
             <a class="nav-item nav-link" href="about.html">About</a>
          </div>
       </div>
@@ -28,6 +29,7 @@
          <br><br>
          <button class="btn btn-secondary" onclick="checkLogin()">Login</button>
          <p>Don't have an account, click<a href="register.html"> here </a>to register</p>
+         <p id="error" class="alert alert-warning hideme"></p>
       </div>
       <script src="https://www.gstatic.com/firebasejs/5.5.6/firebase.js"></script>
       <script>
@@ -52,6 +54,8 @@
              firebase.auth().signInWithEmailAndPassword(uemail, upassword)
                  .catch( error => {
                      console.log(error.message);
+                     document.getElementById("error").classList.remove("hideme");
+                      document.getElementById("error").innerHTML = error.message;
                  });
              
          }
@@ -61,7 +65,7 @@
              // User logged in
              window.location.href = "index.html";
            } else {
-             // No user is signed in.
+             // No user is signed in. 
            }
          });
       </script>

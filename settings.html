@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<head>
+   <title>Heap Exchange</title>
+   <meta charset="utf-8">
+   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+   <link rel="stylesheet" href="stylesheet.css">
+</head>
+<body>
+   <div class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
+      <a class="navbar-brand" href="index.html">Heap Exchange</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+         <div class="navbar-nav">
+            <a class="nav-item nav-link" href="index.html">Home </span></a>
+            <a class="nav-item nav-link active" href="settings.html">Settings<span class="sr-only">(current)</a>
+            <a class="nav-item nav-link" href="about.html">About</a>
+         </div>
+      </div>
+      <div class="nav navbar-nav navbar-right" id="login">
+         <a class="nav-item nav-link" href="login.html">Login</a>
+      </div>
+      <div class="nav navbar-nav navbar-right hideme" id="logout">
+         <a class="nav-item nav-link" onclick="logout()" href='index.html'>Logout</a>
+      </div>
+      <div id="user" class="nav navbar-nav navbar-right">
+      </div>
+   </div>
+   <div id="protect" class="hideme">
+    <h1 class="alert alert-danger"> You must be logged in! </h1>
+   </div>
+   <div id="userAuth" class="hideme">
+    <h1 id="userSettings" class="hideme"></h1>
+   <table class="table">
+    <tr>
+      <td><input type="text" placeholder="Name" id="Name" name="displayName"></td>
+    </tr>
+    <tr>
+      <td><input type="text" placeholder="Email" id="Email" name="displayName"></td>
+    </tr>
+    <tr>
+      <td><input type="Text" placeholder="Password" id="Password" name="password"></td>
+    </tr>
+    <tr>
+      <td><input id="submit" type="submit" name="submit" class="btn btn-secondary" onclick="updateUser()" value="Submit Changes"></td>
+    </tr>
+    <tr>
+      <td><input id="submit" type="submit" name="submit" class="btn btn-danger" onclick="deleteUser()" value="Delete Account"></td>
+    </tr>
+    <tr>
+      <td id="error" class="alert alert-warning hideme"></td>
+    </tr>
+    <tr>
+      <td id="success" class="alert alert-success hideme"></td>
+    </tr>
+   </table>
+ </div>
+   <script src="https://www.gstatic.com/firebasejs/5.5.6/firebase.js"></script>
+   <script>
+      // Initialize Firebase
+      var config = {
+        apiKey: "AIzaSyDIVWvVlRh45VLYILoFcARByGjMBMuNxgY",
+        authDomain: "heapexchange-d68f8.firebaseapp.com",
+        databaseURL: "https://heapexchange-d68f8.firebaseio.com",
+        projectId: "heapexchange-d68f8",
+        storageBucket: "heapexchange-d68f8.appspot.com",
+        messagingSenderId: "605368222798"
+      };
+      
+      firebase.initializeApp(config);
+   </script>
+   <script type="text/javascript">
+      
+      function updateUser(){
+        var user = firebase.auth().currentUser;
+        var displayName = document.getElementById("Name").value;
+        var password = document.getElementById("Password").value;
+        var email = document.getElementById("Email").value;
+        if(displayName){
+          user.updateProfile({
+            displayName: displayName
+          }).then(function() {
+            // Update successful.
+            document.getElementById("success").classList.remove("hideme");
+            document.getElementById("success").innerHTML = "Success!";
+          }).catch(function(error) {
+            // An error happened.
+            document.getElementById("error").classList.remove("hideme");
+            document.getElementById("error").innerHTML = error.message;
+          });
+        }
+        if(password){
+          user.updatePassword(password).then(function() {
+            // Update successful.
+            document.getElementById("success").classList.remove("hideme");
+            document.getElementById("success").innerHTML = "Success!";
+          }).catch(function(error) {
+            // An error happened.
+            document.getElementById("error").classList.remove("hideme");
+            document.getElementById("error").innerHTML = error.message;
+          });
+        } 
+        if(email){
+          user.updateEmail(email).then(function() {
+            // Update successful.
+            document.getElementById("success").classList.remove("hideme");
+            document.getElementById("success").innerHTML = "Success!";
+          }).catch(function(error) {
+            // An error happened.
+            document.getElementById("error").classList.remove("hideme");
+            document.getElementById("error").innerHTML = error.message;
+          });
+        }
+      }
+
+      function deleteUser(){
+        var confirm = window.confirm("Are you sure you want to delete your accoutn?");
+        if(confirm){
+          var user = firebase.auth().currentUser;
+          user.delete().then(function() {
+            // User deleted.
+            document.getElementById("success").classList.remove("hideme");
+            document.getElementById("success").innerHTML = "User Deleted";
+            document.getElementById("userAuth").classList.add("hideme");
+            window.location.href = "index.html";
+
+          }).catch(function(error) {
+            // An error happened.
+            document.getElementById("error").classList.remove("hideme");
+            document.getElementById("error").innerHTML = error.message;
+          });
+        } 
+        
+
+      }
+      function logout(){
+        firebase.auth().signOut();
+      }
+      
+      firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+        var userSettings = document.getElementById("userSettings");
+        userSettings.classList.remove("hideme");
+        if(user.displayName){
+          document.getElementById("user").innerHTML = "<a href='profile.html?id="+user.uid+"&un="+user.email.split("@")[0]+"'</a>" + user.displayName;
+          userSettings.innerHTML = 'Settings for ' + user.displayName;
+        } else{
+          document.getElementById("user").innerHTML = "<a href='profile.html?id="+user.uid+"&un="+user.email.split("@")[0]+"'</a>" + user.email.split("@")[0];
+          userSettings.innerHTML = 'Settings for ' + user.email.split("@")[0];
+        }
+        var protect = document.getElementById("protect");
+        protect.classList.add("hideme")
+        var userAuth = document.getElementById("userAuth");
+        userAuth.classList.remove("hideme")
+        
+        var logout = document.getElementById("logout");
+        logout.classList.remove("hideme");
+        var login = document.getElementById("login");
+        login.classList.add("hideme");
+      } else {
+        // No user is signed in.
+        var protect = document.getElementById("protect");
+        protect.classList.remove("hideme");
+        var logout = document.getElementById("logout");
+        logout.classList.add("hideme");
+        var login = document.getElementById("login");
+        login.classList.remove("hideme");
+        document.getElementById("user").innerHTML = "";
+      }
+      });
+      
+   </script>
+   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+</body>
+</html>

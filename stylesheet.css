@@ -4,6 +4,10 @@
   text-align: center;
 }
 
+.userInput{
+  margin-left: 20px;
+}
+
 .display-5 {
   font-size: 3em;
   text-align: center;

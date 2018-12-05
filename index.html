@@ -14,6 +14,7 @@
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
          <div class="navbar-nav">
             <a class="nav-item nav-link active" href="index.html">Home <span class="sr-only">(current)</span></a>
+            <a class="nav-item nav-link" href="settings.html">Settings</a>
             <a class="nav-item nav-link" href="about.html">About</a>
          </div>
       </div>
@@ -186,7 +187,11 @@
       
       firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
-        document.getElementById("user").innerHTML = "<a href='profile.html?id="+user.uid+"&un="+user.email.split("@")[0]+"'</a>" + user.email.split("@")[0];
+        if(user.displayName){
+          document.getElementById("user").innerHTML = "<a href='profile.html?id="+user.uid+"&un="+user.email.split("@")[0]+"'</a>" + user.displayName;
+        } else{
+          document.getElementById("user").innerHTML = "<a href='profile.html?id="+user.uid+"&un="+user.email.split("@")[0]+"'</a>" + user.email.split("@")[0];
+        }
         var login = document.getElementById("login");
         login.classList.add("hideme")
         var logout = document.getElementById("logout");
