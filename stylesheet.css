@@ -88,6 +88,12 @@
   margin: auto;
 }
 
+#settingsTable{
+  border: none;
+  text-align: center;
+  margin: auto;
+  width: 500px;
+}
 
 p {
   text-align: left;

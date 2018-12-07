@@ -34,7 +34,7 @@
    </div>
    <div id="userAuth" class="hideme">
     <h1 id="userSettings" class="hideme"></h1>
-   <table class="table">
+   <table id='settingsTable'>
     <tr>
       <td><input type="text" placeholder="Name" id="Name" name="displayName"></td>
     </tr>
@@ -49,6 +49,9 @@
     </tr>
     <tr>
       <td><input id="submit" type="submit" name="submit" class="btn btn-danger" onclick="deleteUser()" value="Delete Account"></td>
+    </tr>
+    <tr>
+      <td></td>
     </tr>
     <tr>
       <td id="error" class="alert alert-warning hideme"></td>
