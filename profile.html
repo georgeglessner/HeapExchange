@@ -78,17 +78,51 @@
 
       ref.on("child_added", function(data) {
       
-        let tab = document.getElementById("main");
-                 
-        let row = document.createElement('tr');
-        row.setAttribute("id", data.key);
-        if(data.val().uid){
+      let tab = document.getElementById("main");
+
+      let editBtn = document.createElement('button');
+      editBtn.classList.add("btn");
+      editBtn.classList.add("btn-secondary");
+      editBtn.classList.add("buttons");
+      editBtn.innerHTML = "Edit";
+      editBtn.class = "btn btn-secondary";
+        
+      let delBtn = document.createElement('button');
+      delBtn.classList.add("btn");
+      delBtn.classList.add("btn-secondary");
+      delBtn.classList.add("buttons");
+      delBtn.innerHTML = "Delete";
+      delBtn.class = "btn btn-secondary";
+
+      let td = document.createElement('td');
+        
+      let row = document.createElement('tr');
+      row.setAttribute("id", data.key);
+      
+      if(data.val().uid){
         row.innerHTML = `<td id=${data.key}>${data.val().post} <br><br> Posted: ${data.val().date} By:  <a href="profile.html?id=${data.val().uid}&un=${data.val().user}">${data.val().user}</td>`;
         } else{
         row.innerHTML = `<td id=${data.key}><a href="post.html?id=${data.key}"${data.val().post}</a>${data.val().post} <img src="Images/comment.png" id="commentImg">${numComments}</td>`;
         }
       
-        tab.appendChild(row);
+      if(typeof data.val().post != 'undefined'){
+         firebase.auth().onAuthStateChanged(function(user) {
+            if(user) {
+                // Links the comment to the user. 
+                if(data.val().uid === user.uid){
+                    td.appendChild(editBtn);
+                    td.appendChild(delBtn);
+                    row.appendChild(td);
+                    
+                    editBtn.addEventListener("click", function() {edit(data.key)});
+                    delBtn.addEventListener("click", function() {deletePost(data.key)})
+                } else {
+                    row.appendChild(td);
+                }
+            }
+        })
+      }
+      tab.appendChild(row);
       });
       
       ref.on("child_removed", function(data) {
@@ -126,6 +160,38 @@
         }
       });
       
+      }
+
+      // Edits the comment. Argument passed is the data.key.
+      function edit(val){
+        let editPost = ""
+        commRef = ref.child(val)
+            commRef.once("value", function(data){
+                editPost = prompt("Edit the post", data.val().post);
+                // Checks the propmt to see if the user entered a empty string, some text, or just clicked cancel. Prevents undefined from appearing. 
+                if (editPost === ""){
+                    commRef.update({ post: data.val().post })
+                } else if (editPost !== null){
+                    commRef.update({ post: editPost })
+                } else {
+                    commRef.update({ post: data.val().post })
+                }
+            })
+      }
+
+      // Updates the html table in real time when the comment is edited.
+      ref.on("child_changed", function(data) {
+        let tab = document.getElementById("main");
+      
+        let whichtd = tab.querySelector("td[id="+data.key+"]");
+                                
+        var postChanged = data.val().post;
+        whichtd.innerHTML = `${data.val().post} <br><br> Posted: ${data.val().date} By: <a href="profile.html?id=${data.val().uid}&un=${data.val().user}"> ${data.val().user}`;
+        })
+
+      // Deletes the comment.
+      function deletePost(val){
+          ref.child(val).remove();
       }
       
       function getFormattedDate(date) {
