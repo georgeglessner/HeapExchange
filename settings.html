@@ -12,12 +12,12 @@
       <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-         <div class="navbar-nav">
-            <a class="nav-item nav-link" href="index.html">Home </span></a>
-            <a class="nav-item nav-link active" href="settings.html">Settings<span class="sr-only">(current)</a>
+         <div class="nav navbar-nav">
+            <a class="nav-item nav-link" href="index.html">Home</a>
+            <a class="nav-item nav-link active" href="settings.html">Settings <span class="sr-only">(current)</span></a>
             <a class="nav-item nav-link" href="about.html">About</a>
          </div>
-      </div>
+       <div class="navbar-nav ml-auto">
       <div class="nav navbar-nav navbar-right" id="login">
          <a class="nav-item nav-link" href="login.html">Login</a>
       </div>
@@ -26,7 +26,9 @@
       </div>
       <div id="user" class="nav navbar-nav navbar-right">
       </div>
-   </div>
+    </div>
+    </div>
+  </div>
    <div id="protect" class="hideme">
     <h1 class="alert alert-danger"> You must be logged in! </h1>
    </div>
@@ -143,10 +145,10 @@
         var userSettings = document.getElementById("userSettings");
         userSettings.classList.remove("hideme");
         if(user.displayName){
-          document.getElementById("user").innerHTML = "<a href='profile.html?id="+user.uid+"&un="+user.email.split("@")[0]+"'</a>" + user.displayName;
+          document.getElementById("user").innerHTML = "<a class='nav-item nav-link' href='profile.html?id="+user.uid+"&un="+user.email.split("@")[0]+"'</a>" + user.displayName;
           userSettings.innerHTML = 'Settings for ' + user.displayName;
         } else{
-          document.getElementById("user").innerHTML = "<a href='profile.html?id="+user.uid+"&un="+user.email.split("@")[0]+"'</a>" + user.email.split("@")[0];
+          document.getElementById("user").innerHTML = "<a class='nav-item nav-link' href='profile.html?id="+user.uid+"&un="+user.email.split("@")[0]+"'</a>" + user.email.split("@")[0];
           userSettings.innerHTML = 'Settings for ' + user.email.split("@")[0];
         }
         var protect = document.getElementById("protect");

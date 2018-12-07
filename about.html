@@ -13,17 +13,17 @@
 
 <body>
   <div class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="index.html">Heap Exchange</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-         <span class="navbar-toggler-icon"></span>
-         </button>
-    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-      <div class="navbar-nav">
-        <a class="nav-item nav-link" href="index.html">Home</a>
-        <a class="nav-item nav-link" href="settings.html">Settings</a>
-        <a class="nav-item nav-link active" href="about.html">About <span class="sr-only">(current)</span></a>
-      </div>
-    </div>
+      <a class="navbar-brand" href="index.html">Heap Exchange</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+         <div class="nav navbar-nav">
+            <a class="nav-item nav-link" href="index.html">Home</a>
+            <a class="nav-item nav-link" href="settings.html">Settings</a>
+            <a class="nav-item nav-link  active" href="about.html">About <span class="sr-only">(current)</span></a>
+         </div>
+       <div class="navbar-nav ml-auto">
       <div class="nav navbar-nav navbar-right" id="login">
          <a class="nav-item nav-link" href="login.html">Login</a>
       </div>
@@ -32,7 +32,9 @@
       </div>
       <div id="user" class="nav navbar-nav navbar-right">
       </div>
+      </div>
     </div>
+   </div>
   </div>
   <div class="container">
     <div>
@@ -60,9 +62,9 @@
       firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
         if(user.displayName){
-          document.getElementById("user").innerHTML = "<a href='profile.html?id="+user.uid+"&un="+user.email.split("@")[0]+"'</a>" + user.displayName;
+          document.getElementById("user").innerHTML = "<a class='nav-item nav-link' href='profile.html?id="+user.uid+"&un="+user.email.split("@")[0]+"'</a>" + user.displayName;
         } else{
-          document.getElementById("user").innerHTML = "<a href='profile.html?id="+user.uid+"&un="+user.email.split("@")[0]+"'</a>" + user.email.split("@")[0];
+          document.getElementById("user").innerHTML = "<a class='nav-item nav-link' href='profile.html?id="+user.uid+"&un="+user.email.split("@")[0]+"'</a>" + user.email.split("@")[0];
         }
         var login = document.getElementById("login");
         login.classList.add("hideme")
