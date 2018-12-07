@@ -120,7 +120,7 @@
       }
 
       function deleteUser(){
-        var confirm = window.confirm("Are you sure you want to delete your accoutn?");
+        var confirm = window.confirm("Are you sure you want to delete your account?");
         if(confirm){
           var user = firebase.auth().currentUser;
           user.delete().then(function() {
